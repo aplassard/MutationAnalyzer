@@ -7,3 +7,6 @@ class Patient(models.Model):
     affliction_status = models.BooleanField(default=False)
     mother = models.ForeignKey(Patient,null=True,blank=True)
     father = models.ForeignKey(Patient,null=True,blank=True)
+
+    def __unicode__(self):
+        return name

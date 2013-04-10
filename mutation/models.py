@@ -5,3 +5,6 @@ class Mutation(models.Model):
     pos   = models.IntegerField()
     ref   = models.CharField(max_length=1000)
     alt   = models.CharField(max_length=1000)
+
+    def __unicode__(self):
+        return chrom+'_'+str(pos)+ref+'->'+alt
