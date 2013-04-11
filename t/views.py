@@ -16,8 +16,8 @@ def submit(request):
             message = 'Form was valid'
             e = Experiment(name=request.POST['experiment'],start_date = timezone.now())
             e.save()
-            print 'experiment saved',e.id
-            handle_file_upload(request.FILES['vcf_file'],UPLOAD_ROOT)
+            handle_file_upload(request.FILES['vcf_file'],UPLOAD_ROOT+str(e.id)+'.vcf')
+            handle_file_upload(request.FILES['ped_file'],UPLOAD_ROOT+str(e.id)+'.ped')
         return render(request, 'tests/submit.html', {'message':message })
     else:
         form = SubmitForm()
