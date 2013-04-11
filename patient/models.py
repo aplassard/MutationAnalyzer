@@ -1,5 +1,6 @@
 from django.db import models
 from experiment.models import Experiment
+from mutation.models import Mutation
 
 class Patient(models.Model):
     experiments = models.ForeignKey(Experiment)
