@@ -10,3 +10,11 @@ class Patient(models.Model):
 
     def __unicode__(self):
         return name
+
+class Patient_Mutations(models.Model):
+    patient   = models.ForeignKey(Patient)
+    mutation = models.ForeignKey(Mutation)
+    is_homozygous = models.BooleanField()
+
+    def __unicode__(self):
+        return 'Patient: '+str(self.patient)+' Mutation: '+str(self.mutation)
