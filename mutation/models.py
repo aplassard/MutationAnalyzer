@@ -7,4 +7,4 @@ class Mutation(models.Model):
     alt   = models.CharField(max_length=1000)
 
     def __unicode__(self):
-        return chrom+'_'+str(pos)+ref+'->'+alt
+        return str(self.chrom)+'_'+str(self.pos)+'.'+str(self.ref)+'->'+str(self.alt)
