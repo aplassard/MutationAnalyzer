@@ -2,7 +2,8 @@ from django.http import HttpResponse
 from django.shortcuts import render
 from django import forms
 from MutationAnalyzer.settings import UPLOAD_ROOT
-from experiments.models import Experiment
+from experiment.models import Experiment
+from django.utils import timezone
 
 from MutationAnalyzer.helpers import handle_file_upload
 
@@ -13,6 +14,9 @@ def submit(request):
             message = 'Form was invalid'
         else:
             message = 'Form was valid'
+            e = Experiment(name=request.POST['experiment'],start_date = timezone.now())
+            e.save()
+            print 'experiment saved',e.id
             handle_file_upload(request.FILES['vcf_file'],UPLOAD_ROOT)
         return render(request, 'tests/submit.html', {'message':message })
     else:
