@@ -5,7 +5,6 @@ TEMPLATE_DEBUG = DEBUG
 
 import os
 PROJECT_ROOT = os.path.abspath(os.path.dirname(__file__))
-print 'Project Root:',PROJECT_ROOT
 
 ADMINS = (
     # ('Your Name', 'your_email@example.com'),
