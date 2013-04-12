@@ -10,3 +10,10 @@ def parse_vcf(vcf_file):
             for sample in record.samples:
                 print sample,
     print
+
+def handle_file_upload(f,d):
+    if f.name.endswith('gz'):
+        d+='.gz'
+    with open(d,'wb+') as destination:
+        for chunk in f.chunks():
+            destination.write(chunk)
