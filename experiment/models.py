@@ -5,5 +5,5 @@ class Experiment(models.Model):
     start_date = models.DateTimeField()
 
     def __unicode__(self):
-        return name
+        return self.name
 
