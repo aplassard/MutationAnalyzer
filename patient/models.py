@@ -12,7 +12,7 @@ class Patient(models.Model):
     family = models.CharField(max_length=30)
 
     def __unicode__(self):
-        return name
+        return self.patient_name
 
 class Patient_Mutations(models.Model):
     patient   = models.ForeignKey(Patient)

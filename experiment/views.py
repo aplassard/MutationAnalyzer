@@ -14,6 +14,17 @@ def parse_ped(ped_file,experiment_id):
         line = line.strip().split(',')
         p = Patient(patient_name = line[0], affliction_status=line[6]=='1', family=line[1], gender= ('male' if line[5]=='0' else 'female'),experiment=Experiment.objects.get(pk=1))
         p.save()
+    f.close()
+    f = open(ped_file,'r')
+    f.readline()
+    for line in f:
+        line = line.strip().split(',')
+        p = Patient.objects.filter(patient_name=line[0],experiment_id__exact=experiment_id)[0]
+        if line[3] != '?':
+            p.father = Patient.objects.filter(patient_name=line[3],experiment_id__exact=experiment_id)[0]
+        if line[4] != '?':
+            p.mother = Patient.objects.filter(patient_name=line[4],experiment_id__exact=experiment_id)[0]
+        p.save()
 
 class NewExperimentForm(forms.Form):
     experiment = forms.CharField(max_length=50)
