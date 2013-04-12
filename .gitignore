@@ -5,3 +5,4 @@
 *.sqlite3
 MutationAnalyzer/upload/*
 venv
+MutationAnalyzer/upload/*
