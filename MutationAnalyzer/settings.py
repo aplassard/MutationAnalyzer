@@ -132,6 +132,8 @@ INSTALLED_APPS = (
     'mutation',
     'experiment',
     'patient',
+    'family',
+    'gene',
 )
 
 # A sample logging configuration. The only tangible logging
