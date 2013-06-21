@@ -38,6 +38,26 @@ def parse_vcf(file_name,experiment_id):
     m = 1000
     o = 0
     for record in vcf_reader:
+        if len(all_muts.keys()) > 10000:
+            print 'Taking a Break from reading the VCF to load some mutations out of memory into the database'
+            Mutation.objects.bulk_create(filter(lambda x: not x.id,all_muts.values()))
+            print 'Reloading Mutations that did not have IDs',
+            start = time.time()
+            for key in all_muts.keys():
+                if not all_muts[key].id:
+                    mut = all_muts[key]
+                    all_muts[key]=Mutation.objects.get(pos = mut.pos, ref = mut.ref, alt=mut.alt, chrom = mut.chrom)
+            print 'and it took %s seconds' % (int(time.time()-start))
+            start = time.time()
+            for i in xrange(len(PMs)):
+                mut = all_muts.get(PMs[i][1])
+                PMs[i][0].mutation=mut
+                PMs[i]=PMs[i][0]
+            Patient_Mutation.objects.bulk_create(PMs)
+            print 'Created %s Patient Mutations and this took %s seconds' % (len(PMs),int(time.time()-start))
+            PMs = []
+            all_muts = {}
+
         muts = {}
         o += 1
         for alt in record.ALT:
@@ -62,11 +82,19 @@ def parse_vcf(file_name,experiment_id):
                     if mut:
                         PMs.append((Patient_Mutation(patient = patient, is_homozygous = not sample.is_het),mut))
     Mutation.objects.bulk_create(filter(lambda x: not x.id,all_muts.values()))
+    print 'Reloading Mutations that did not have IDs',
+    n = 0
+    start = time.time()
+    for key in all_muts.keys():
+        if not all_muts[key].id:
+            mut = all_muts[key]
+            all_muts[key]=Mutation.objects.get(pos = mut.pos, ref = mut.ref, alt=mut.alt, chrom = mut.chrom)
+    print 'and it took %s seconds' % (int(time.time()-start))
     start = time.time()
     for i in xrange(len(PMs)):
-        mut = all_muts.get(PMs[i][0])
+        mut = all_muts.get(PMs[i][1])
         PMs[i][0].mutation=mut
-        PMs[i]=PMs[i][0].mutation
+        PMs[i]=PMs[i][0]
     Patient_Mutation.objects.bulk_create(PMs)
     print 'Created %s Patient Mutations and this took %s seconds' % (len(PMs),int(time.time()-start))
     print '** Done Parsing VCF File **'
